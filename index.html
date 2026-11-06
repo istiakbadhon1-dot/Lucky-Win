@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111832">
+<title>Lucky Win</title>
+<style>
+:root{--bg:#0e1530;--panel:#1a2547;--panel2:#24335d;--gold:#ffd45a;--muted:#b8c4e8;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top,#26345f,#0e1530 55%);color:var(--white);font-family:system-ui,"Noto Sans Bengali",sans-serif;min-height:100vh}
+.wrap{max-width:480px;margin:auto;padding:18px 16px 34px}.brand{display:flex;align-items:center;justify-content:space-between;margin:8px 0 18px}.logo{font-weight:900;font-size:25px;color:var(--gold);letter-spacing:1px}.tag{font-size:11px;color:#a9f0c0;border:1px solid #397b59;padding:5px 9px;border-radius:20px}
+.card{background:linear-gradient(145deg,#202d53,#172141);border:1px solid #34436d;border-radius:20px;padding:17px;margin:12px 0;box-shadow:0 12px 30px #050a1c66}
+h1,h2,h3,p{margin-top:0}h1{font-size:22px;margin-bottom:6px}h2{font-size:18px}p,.muted{color:var(--muted);font-size:13px;line-height:1.5}
+.balance{font-size:30px;color:var(--gold);font-weight:850;margin:4px 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button{border:0;border-radius:13px;padding:13px 12px;background:var(--gold);color:#18213e;font-weight:800;font-size:14px;cursor:pointer}
+button.secondary{background:#2a3963;color:white;border:1px solid #43547f}button:disabled{opacity:.45;cursor:not-allowed}
+.tile{min-height:108px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:7px;background:#26365f;border:1px solid #3a4b79;border-radius:16px;color:white;font-weight:700}
+.emoji{font-size:27px}.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+input{width:100%;padding:13px;margin:6px 0 12px;border-radius:11px;border:1px solid #485a88;background:#101a37;color:white;font-size:15px}
+label{font-size:12px;color:var(--muted)}.hidden{display:none!important}.nav{display:flex;gap:8px;margin:14px 0}.nav button{flex:1;padding:10px 5px;font-size:12px}
+.pill{display:inline-block;background:#354777;padding:5px 9px;border-radius:20px;font-size:11px;color:#dbe4ff}
+.result{min-height:44px;text-align:center;color:var(--gold);font-weight:800;padding:10px}
+footer{text-align:center;color:#8391b8;font-size:11px;padding:20px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="brand"><div class="logo">🍀 LUCKY WIN</div><span class="tag">VIRTUAL REWARDS</span></header>
+
+  <section id="auth" class="card">
+    <h1>Lucky Win-এ স্বাগতম!</h1>
+    <p>অ্যাকাউন্টে ঢুকতে একটি পদ্ধতি বেছে নাও। এটি একটি ডেমো—এখানে আসল পাসওয়ার্ড বা OTP দেবে না।</p>
+    <div class="grid">
+      <button onclick="showForm('email')">ইমেইল লগইন</button>
+      <button onclick="showForm('phone')">মোবাইল লগইন</button>
+      <button class="secondary" onclick="demoGoogle()">Google Login</button>
+      <button class="secondary" onclick="guest()">Guest Mode</button>
+    </div>
+    <div id="loginForm" class="hidden" style="margin-top:18px">
+      <h2 id="formTitle">লগইন</h2>
+      <label id="idLabel">ইমেইল</label><input id="userId" placeholder="ডেমো নাম বা ইমেইল">
+      <label>পাসওয়ার্ড (ডেমোতে যাচাই হয় না)</label><input id="pass" type="password" placeholder="শুধু ডেমো ইনপুট" autocomplete="off">
+      <div class="grid"><button onclick="enterAccount()">লগইন</button><button class="secondary" onclick="enterAccount()">নতুন অ্যাকাউন্ট</button></div>
+      <p class="muted">বাস্তব Google, ইমেইল, ফোন ও OTP লগইনের জন্য নিরাপদ সার্ভার/Firebase Authentication সংযোগ প্রয়োজন।</p>
+    </div>
+  </section>
+
+  <main id="app" class="hidden">
+    <div class="card">
+      <div class="row"><div><span class="pill" id="mode">OFFLINE MODE</span><h1 id="welcome">হ্যালো!</h1><p>আজ খেলো, মজা করো, ভার্চুয়াল কয়েন জিতো।</p></div><div style="font-size:34px">🏆</div></div>
+      <div class="muted">তোমার ভার্চুয়াল কয়েন</div><div class="balance" id="coins">1,000 🪙</div>
+      <div class="row"><span class="muted">পয়েন্ট: <b id="points">0</b></span><button class="secondary" onclick="profile()">প্রোফাইল</button></div>
+    </div>
+    <div class="grid">
+      <button class="tile" onclick="spin()"><span class="emoji">🎡</span>লাকি স্পিন</button>
+      <button class="tile" onclick="scratch()"><span class="emoji">🎟️</span>স্ক্র্যাচ কার্ড</button>
+      <button class="tile" onclick="daily()"><span class="emoji">🎁</span>ডেইলি বোনাস</button>
+      <button class="tile" onclick="quiz()"><span class="emoji">🧠</span>কুইজ গেম</button>
+    </div>
+    <div class="card"><h2 id="gameTitle">খেলা শুরু করো!</h2><p id="gameDesc">উপরের যেকোনো গেম বেছে নাও।</p><div class="result" id="result">✨ শুভকামনা!</div><div id="quizChoices" class="grid"></div></div>
+    <div class="nav"><button class="secondary" onclick="setOnline(false)">Offline</button><button class="secondary" onclick="setOnline(true)">Online demo</button><button class="secondary" onclick="logout()">Logout</button></div>
+    <p class="muted" id="profileText"></p>
+  </main>
+  <footer>Lucky Win • কেবল বিনোদনের জন্য ভার্চুয়াল কয়েন • বাস্তব অর্থ নয়</footer>
+</div>
+<script>
+let state={coins:1000,points:0,lastDaily:"",user:"Guest",online:false,usedScratch:false};
+const $=id=>document.getElementById(id);
+function save(){try{localStorage.setItem("luckyWinDemo",JSON.stringify(state))}catch(e){}}
+function load(){try{let s=JSON.parse(localStorage.getItem("luckyWinDemo")||"null");if(s)state={...state,...s}}catch(e){}}
+function render(){ $("coins").textContent=state.coins.toLocaleString("en-US")+" 🪙";$("points").textContent=state.points;$("welcome").textContent="হ্যালো, "+state.user+"!";$("mode").textContent=state.online?"ONLINE DEMO":"OFFLINE MODE";$("profileText").textContent="প্রোফাইল: "+state.user+" • মোট পয়েন্ট: "+state.points+" • ডেমো অ্যাকাউন্ট";save()}
+function showForm(type){$("loginForm").classList.remove("hidden");$("formTitle").textContent=type==="email"?"ইমেইল লগইন":"মোবাইল নম্বর লগইন";$("idLabel").textContent=type==="email"?"ইমেইল / ডেমো নাম":"মোবাইল নম্বর / ডেমো নাম";$("userId").placeholder=type==="email"?"demo@example.com":"01XXXXXXXXX"}
+function enterAccount(){let n=$("userId").value.trim();if(!n){alert("একটি ডেমো নাম বা আইডি লেখো।");return}state.user=n;openApp()}
+function demoGoogle(){state.user="Google Demo User";alert("এটি Google Login-এর ডেমো বোতাম; বাস্তব Google sign-in এখনো সংযুক্ত নয়।");openApp()}
+function guest(){state.user="Guest";openApp()}
+function openApp(){$("auth").classList.add("hidden");$("app").classList.remove("hidden");render()}
+function logout(){$("app").classList.add("hidden");$("auth").classList.remove("hidden")}
+function setOnline(v){state.online=v;render();$("result").textContent=v?"Online demo চালু। সার্ভার সিঙ্ক এখনো যুক্ত নয়।":"Offline mode চালু।"}
+function reward(n){state.coins+=n;state.points+=Math.max(1,Math.floor(n/10));render();return n}
+function msg(t,d,r){$("gameTitle").textContent=t;$("gameDesc").textContent=d;$("result").textContent=r;$("quizChoices").innerHTML=""}
+function spin(){if(state.coins<20){msg("কয়েন কম","স্পিন করতে ২০ কয়েন লাগে।","আর কয়েন সংগ্রহ করো।");return}state.coins-=20;let n=[0,10,20,30,50,100][Math.floor(Math.random()*6)];if(n)reward(n);else render();msg("লাকি স্পিন","২০ কয়েন খরচ হয়েছে।","🎡 তুমি পেয়েছ "+n+" কয়েন!")}
+function scratch(){if(state.usedScratch){msg("স্ক্র্যাচ কার্ড","আজকের ডেমো কার্ড ব্যবহার করা হয়েছে।","আগামীবার আবার চেষ্টা করো!");return}state.usedScratch=true;let n=[5,10,25,50][Math.floor(Math.random()*4)];reward(n);msg("স্ক্র্যাচ কার্ড","কার্ড খুলে গেছে!","🎉 পেয়েছ "+n+" কয়েন!")}
+function daily(){let day=new Date().toLocaleDateString();if(state.lastDaily===day){msg("ডেইলি বোনাস","আজকের বোনাস নেওয়া হয়েছে।","আগামীকাল আবার এসো!");return}state.lastDaily=day;reward(50);msg("ডেইলি বোনাস","প্রতিদিন একবার বোনাস পাওয়া যায়।","🎁 ৫০ কয়েন যোগ হয়েছে!")}
+function quiz(){msg("কুইজ গেম","বাংলাদেশের জাতীয় ফুল কোনটি?","সঠিক উত্তর বেছে নাও:");["শাপলা","গোলাপ","জবা","সূর্যমুখী"].forEach((v,i)=>{let b=document.createElement("button");b.className=i===0?"":"secondary";b.textContent=v;b.onclick=()=>{if(i===0){reward(20);$("result").textContent="সঠিক! +২০ কয়েন 🎉"}else $("result").textContent="আবার চেষ্টা করো! সঠিক উত্তর: শাপলা";$("quizChoices").innerHTML=""};$("quizChoices").appendChild(b)})}
+function profile(){msg("আমার প্রোফাইল","নাম: "+state.user+" | পয়েন্ট: "+state.points+" | কয়েন: "+state.coins,"👤 তোমার ডেমো প্রোফাইল")}
+load();
+</script>
+</body></html>
